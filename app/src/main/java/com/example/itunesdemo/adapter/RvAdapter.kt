@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.itunesdemo.R
 import com.example.itunesdemo.net.Result
 
-class RvAdapter(private val list: List<Result>) : RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
+class RvAdapter(val list: List<Result>) : RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
