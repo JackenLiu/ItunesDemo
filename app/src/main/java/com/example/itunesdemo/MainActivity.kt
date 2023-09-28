@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.itunesdemo.adapter.RvAdapter
+import com.example.itunesdemo.net.Result
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this).get(ItunesViewModel::class.java)
-
         progressDialog = ProgressDialog(this).apply {
             setMessage("加载中...")
             setCancelable(false)
@@ -24,8 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.data.observe(this, {
             progressDialog.dismiss()
-            Toast.makeText(this, it.results[0].artistViewUrl, 0).show()
             // 更新你的UI
+            rv.layoutManager = LinearLayoutManager(this)
+            rv.adapter = RvAdapter(it.results)
         })
 
         viewModel.error.observe(this, { error ->
