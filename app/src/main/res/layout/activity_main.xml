@@ -21,8 +21,8 @@
         android:gravity="center_vertical|left"
         android:hint="输入"
         android:imeOptions="actionSearch"
-        android:lines="1"
         android:inputType="text"
+        android:lines="1"
         android:maxLength="20"
         android:maxLines="1"
         android:paddingLeft="6dp"
@@ -43,8 +43,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ed" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
@@ -54,7 +54,33 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srlEnableAutoLoadMore="false">
+
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlTextFinish="更新成功"
+            app:srlTextPulling="下拉加载上一页数据"
+            app:srlTextRefreshing="加载中..."
+            app:srlTextRelease="释放加载上一页数据" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:overScrollMode="never" />
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlTextFinish="更新成功"
+            app:srlTextPulling="上拉加载下一页数据"
+            app:srlTextLoading="更新中..."
+            app:srlTextRelease="释放加载下一页数据" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="50dp"

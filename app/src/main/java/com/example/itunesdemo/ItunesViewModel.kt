@@ -12,8 +12,8 @@ class ItunesViewModel : ViewModel() {
     val data: LiveData<ItunesResponse> = repository.data
     val error: LiveData<String> = repository.error
 
-    fun fetchData(content: String) {
-        repository.searchItunes(content, 20, 20)
+    fun fetchData(content: String, offset: Int, limit: Int) {
+        repository.searchItunes(content, offset, limit)
     }
 }
 

@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.itunesdemo.R
 import com.example.itunesdemo.net.Result
 
-class RvAdapter(val list: List<Result>) : RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
+class RvAdapter(private val list: MutableList<Result> = mutableListOf()) : RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
@@ -48,6 +48,12 @@ class RvAdapter(val list: List<Result>) : RecyclerView.Adapter<RvAdapter.RvViewH
 
     override fun getItemViewType(position: Int) = position
     override fun getItemCount() = list.size
+
+    fun updateData(newItems: List<Result>) {
+        list.clear()
+        list.addAll(newItems)
+        notifyDataSetChanged()
+    }
 
     inner class RvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iv = itemView.findViewById<ImageView>(R.id.iv)

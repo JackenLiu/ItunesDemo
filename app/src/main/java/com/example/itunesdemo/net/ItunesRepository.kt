@@ -24,7 +24,12 @@ class ItunesRepository {
                 if (response.isSuccessful) {
                     _data.postValue(response.body())
                 } else {
-                    _error.postValue("Error: ${response.code()}")
+                    _error.postValue(
+                        "Code: ${response.code()}\n\nBody: ${
+                            response.errorBody()
+                                ?.string()
+                        }"
+                    )
                 }
             }
 
