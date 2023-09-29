@@ -15,7 +15,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.itunesdemo.adapter.CatalogueAdapter
+import com.example.itunesdemo.adapter.CatalogueAdapter.TextBean
 import com.example.itunesdemo.adapter.RvAdapter
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -28,10 +29,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
 
     private var offset = 0
-    private val offsetValue = 20
+    private val offsetValue = 200
     private var limit = offsetValue
 
     private val adapter = RvAdapter()
+    private val catalogueAdapter = CatalogueAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,6 +41,9 @@ class MainActivity : AppCompatActivity() {
 
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = adapter
+        rv_catalogue.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_catalogue.adapter = catalogueAdapter
 
         viewModel = ViewModelProvider(this).get(ItunesViewModel::class.java)
         progressDialog = ProgressDialog(this).apply {
@@ -49,6 +54,26 @@ class MainActivity : AppCompatActivity() {
         viewModel.data.observe(this) {
             if (it.resultCount != 0) {
                 adapter.updateData(it.results)
+
+                val catalogueList = mutableListOf<TextBean>()
+                val nameList = mutableListOf<String>()
+                for (result in it.results) {
+                    if (result.kind != null && !nameList.contains(result.kind)) {
+                        nameList.add(result.kind)
+                        val textBean = TextBean()
+                        textBean.name = result.kind
+                        catalogueList.add(textBean)
+                    }
+                    if (result.country != null && !nameList.contains(result.country)) {
+                        val textBean = TextBean()
+                        nameList.add(result.country)
+                        textBean.name = result.country
+                        catalogueList.add(textBean)
+                    }
+                }
+                val catalogueAdapter = CatalogueAdapter()
+                rv_catalogue.adapter = catalogueAdapter
+                catalogueAdapter.updateData(catalogueList)
             }
 
             refreshLayout.finishLoadMore()
@@ -57,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             window.decorView.postDelayed({
                 progressDialog.dismiss()
                 rv.smoothScrollBy(0, -10000)
+                rv_catalogue.smoothScrollBy(-10000, 0)
             }, 800)
 
         }
@@ -95,6 +121,7 @@ class MainActivity : AppCompatActivity() {
             if (event.action == MotionEvent.ACTION_UP) {
                 if (ed.compoundDrawables[2] != null && event.rawX >= ed.right - ed.compoundDrawables[2].bounds.width()) {
                     ed.setText("")
+                    showKeyboard(v)
                     return@OnTouchListener true
                 }
             }
@@ -122,6 +149,11 @@ class MainActivity : AppCompatActivity() {
     private fun hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    private fun showKeyboard(view: View) {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager?.showSoftInput(view, 0)
     }
 
     private fun showErrorDialog(errorMessage: String) {
