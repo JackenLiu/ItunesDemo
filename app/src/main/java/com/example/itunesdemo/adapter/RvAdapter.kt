@@ -1,5 +1,6 @@
 package com.example.itunesdemo.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,7 @@ class RvAdapter(
             "software-package" -> "软件包"
             "tv-episode" -> "电视剧集"
             "artist" -> "艺术家"
-            else -> "无指定类型"
+            else -> "其他"
         }
 
 
@@ -80,20 +81,30 @@ class RvAdapter(
         notifyDataSetChanged()
     }
 
-    fun filterList(filterList: List<String>) {
+    fun filterList(selectFilterNum: Int, filterList: List<CatalogueAdapter.TextBean>) {
         val newList = mutableListOf<Result>()
         newList.addAll(originList)
-        if (filterList.isNotEmpty())
-            for (result in list) {
-                var shouldRemove = true
-                loop@ for (s in filterList) {
-                    // 如果在过滤的条件中
-                    if (result.kind == s && result.country == s) {
-                        shouldRemove = false
+        if (selectFilterNum != 0) {
+            var isCountryCheck = false
+            var isKindCheck = false
+            for (result in originList) {
+                loop@ for (bean in filterList) {
+                    // the filter is selected
+                    if (bean.isSelect) {
+                        if (bean.isCountry) { // country match
+                            if (result.country != bean.name) if (newList.contains(result))
+                                newList.remove(result)
+
+                        } else { // kind match
+                            if (result.kind != bean.name) if (newList.contains(result))
+                                newList.remove(result)
+                        }
                     }
                 }
-                if (shouldRemove) newList.remove(result)
+
             }
+        }
+
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()

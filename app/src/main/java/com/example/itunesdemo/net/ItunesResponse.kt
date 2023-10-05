@@ -1,5 +1,7 @@
 package com.example.itunesdemo.net
 
+import com.example.itunesdemo.adapter.CatalogueAdapter
+
 data class ItunesResponse(
     val resultCount: Int,
     val results: List<Result>
@@ -45,5 +47,6 @@ data class Result(
     val trackViewUrl: String,
     val wrapperType: String,
 
-    var isLike: Boolean
+    var isLike: Boolean,
+    val filterList: MutableList<CatalogueAdapter.TextBean> = mutableListOf()
 )

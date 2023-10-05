@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
 
     private var offset = 0
-    private val offsetValue = 20
+    private val offsetValue = 200
     private var limit = offsetValue
 
     private val adapter = RvAdapter()
@@ -62,12 +62,14 @@ class MainActivity : AppCompatActivity() {
                         nameList.add(result.kind)
                         val textBean = TextBean()
                         textBean.name = result.kind
+                        textBean.isCountry = false
                         catalogueList.add(textBean)
                     }
                     if (result.country != null && !nameList.contains(result.country)) {
                         val textBean = TextBean()
                         nameList.add(result.country)
                         textBean.name = result.country
+                        textBean.isCountry = true
                         catalogueList.add(textBean)
                     }
                 }
