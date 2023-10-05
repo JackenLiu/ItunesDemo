@@ -37,7 +37,7 @@ data class Result(
     val trackCount: Int,
     val trackExplicitness: String,
     val trackId: Int,
-    val trackName: String,
+    val trackName: String?,
     val trackNumber: Int,
     val trackPrice: Double,
     val trackRentalPrice: Double,

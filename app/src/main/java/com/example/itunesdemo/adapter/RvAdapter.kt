@@ -11,7 +11,12 @@ import com.bumptech.glide.Glide
 import com.example.itunesdemo.R
 import com.example.itunesdemo.net.Result
 
-class RvAdapter(private val list: MutableList<Result> = mutableListOf()) : RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
+class RvAdapter(
+    private val list: MutableList<Result> = mutableListOf(),
+    private val originList: MutableList<Result> = mutableListOf()
+) :
+    RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
@@ -35,8 +40,26 @@ class RvAdapter(private val list: MutableList<Result> = mutableListOf()) : Recyc
             .centerCrop()
             .into(holder.iv)
 
-        holder.tvTitle.text = list[position].artistName
-        holder.tvDetail.text = list[position].trackName
+        val typeName = when (list[position].kind) {
+            "feature-movie" -> "电影"
+            "book" -> "电子书"
+            "song" -> "歌曲"
+            "album" -> "专辑"
+            "coached-audio" -> "指导音频"
+            "interactive-booklet" -> "互动手册"
+            "music-video" -> "音乐视频"
+            "pdf podcast" -> "pdf 播客"
+            "podcast-episode" -> "播客剧集"
+            "software-package" -> "软件包"
+            "tv-episode" -> "电视剧集"
+            "artist" -> "艺术家"
+            else -> "无指定类型"
+        }
+
+
+        holder.tvTitle.text = if (list[position].trackName != null) list[position].trackName
+        else list[position].collectionName
+        holder.tvDetail.text = typeName + " · " + list[position].artistName
 
         holder.ivR.setOnClickListener {
             list[position].isLike = !list[position].isLike
@@ -51,7 +74,28 @@ class RvAdapter(private val list: MutableList<Result> = mutableListOf()) : Recyc
 
     fun updateData(newItems: List<Result>) {
         list.clear()
+        originList.clear()
         list.addAll(newItems)
+        for (item in newItems) originList.add(item)
+        notifyDataSetChanged()
+    }
+
+    fun filterList(filterList: List<String>) {
+        val newList = mutableListOf<Result>()
+        newList.addAll(originList)
+        if (filterList.isNotEmpty())
+            for (result in list) {
+                var shouldRemove = true
+                loop@ for (s in filterList) {
+                    // 如果在过滤的条件中
+                    if (result.kind == s && result.country == s) {
+                        shouldRemove = false
+                    }
+                }
+                if (shouldRemove) newList.remove(result)
+            }
+        list.clear()
+        list.addAll(newList)
         notifyDataSetChanged()
     }
 

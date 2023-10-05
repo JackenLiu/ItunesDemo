@@ -29,11 +29,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
 
     private var offset = 0
-    private val offsetValue = 200
+    private val offsetValue = 20
     private var limit = offsetValue
 
     private val adapter = RvAdapter()
-    private val catalogueAdapter = CatalogueAdapter()
+    private val catalogueAdapter = CatalogueAdapter(adapter)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.updateData(it.results)
 
                 val catalogueList = mutableListOf<TextBean>()
-                val nameList = mutableListOf<String>()
+                val nameList = mutableListOf<String>() // 已经添加过的目录名
                 for (result in it.results) {
                     if (result.kind != null && !nameList.contains(result.kind)) {
                         nameList.add(result.kind)
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                         catalogueList.add(textBean)
                     }
                 }
-                val catalogueAdapter = CatalogueAdapter()
+                val catalogueAdapter = CatalogueAdapter(adapter)
                 rv_catalogue.adapter = catalogueAdapter
                 catalogueAdapter.updateData(catalogueList)
             }

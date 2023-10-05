@@ -12,7 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.itunesdemo.R
 import com.example.itunesdemo.net.Result
 
-class CatalogueAdapter(private val list: MutableList<TextBean> = mutableListOf()) :
+class CatalogueAdapter(
+    private var rvAdapter: RvAdapter, private val list: MutableList<TextBean> = mutableListOf()
+) :
     RecyclerView.Adapter<CatalogueAdapter.RvViewHolder>() {
 
     private val filterList = mutableListOf<String>()
@@ -26,17 +28,23 @@ class CatalogueAdapter(private val list: MutableList<TextBean> = mutableListOf()
         holder.tvTitle.text = list[position].name
 
         holder.tvTitle.setOnClickListener {
+            list[position].isSelect = !list[position].isSelect
+
             if (list[position].isSelect) {
+                holder.tvTitle.setTextColor(Color.WHITE)
+                holder.tvTitle.setBackgroundResource(R.drawable.shape_circle_rectangle_red)
+
+                // add filter name
+                if (!filterList.contains(list[position].name)) filterList.add(list[position].name)
+            } else {
                 holder.tvTitle.setTextColor(Color.BLACK)
                 holder.tvTitle.setBackgroundResource(R.drawable.shape_circle_rectangle_red_empty)
 
-                if (!filterList.contains(list[position].name)) filterList.add(list[position].name)
-            } else {
-                holder.tvTitle.setTextColor(Color.WHITE)
-                holder.tvTitle.setBackgroundResource(R.drawable.shape_circle_rectangle_red)
+                // remove filter name
+                if (filterList.contains(list[position].name)) filterList.remove(list[position].name)
             }
-            list[position].isSelect = !list[position].isSelect
 
+            rvAdapter.filterList(filterList)
         }
     }
 
