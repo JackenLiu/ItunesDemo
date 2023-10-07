@@ -5,19 +5,26 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupWindow
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.example.itunesdemo.adapter.CatalogueAdapter
 import com.example.itunesdemo.adapter.CatalogueAdapter.TextBean
 import com.example.itunesdemo.adapter.RvAdapter
+import com.example.itunesdemo.db.AppDatabase
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,7 +32,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ItunesViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var progressDialog: ProgressDialog
 
     private var offset = 0
@@ -34,10 +41,15 @@ class MainActivity : AppCompatActivity() {
 
     private val adapter = RvAdapter()
     private val catalogueAdapter = CatalogueAdapter(adapter)
+
+    private lateinit var db: AppDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setViewListener()
+
+        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "favorite").build()
 
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = adapter
@@ -45,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_catalogue.adapter = catalogueAdapter
 
-        viewModel = ViewModelProvider(this).get(ItunesViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         progressDialog = ProgressDialog(this).apply {
             setMessage("加载中...")
             setCancelable(false)
@@ -141,6 +153,8 @@ class MainActivity : AppCompatActivity() {
             offset += offsetValue
             fetchDataFromApi(ed.text.toString(), offset, limit)
         })
+        // favorite
+        iv_favorites.setOnClickListener { showPopupWindow() }
     }
 
     private fun fetchDataFromApi(content: String, offset: Int, limit: Int) {
@@ -163,6 +177,58 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }.show()
+    }
+
+
+    private fun showPopupWindow() {
+        viewModel.getAllData(db.dataDao())
+        viewModel.favorData.observe(this) {
+            if (it == null) {
+                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show()
+                return@observe
+            }
+
+            // 从 XML 布局文件中获取 PopupWindow 的内容
+            val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val popupView = inflater.inflate(R.layout.layout_popup, null)
+
+            // 初始化 PopupWindow
+            val popupWindow = PopupWindow(
+                popupView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            // 可以点击外部区域消失
+            popupWindow.isOutsideTouchable = true
+            popupWindow.isFocusable = true
+
+            // 如果 API >= 21, 设置 PopupWindow 的进入和退出动画
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                popupWindow.enterTransition = android.transition.TransitionInflater.from(this)
+                    .inflateTransition(android.R.transition.fade)
+                popupWindow.exitTransition = android.transition.TransitionInflater.from(this)
+                    .inflateTransition(android.R.transition.fade)
+            }
+
+            // 获取并设置 PopupWindow 中的文本或按钮等 UI 组件的行为
+//        val popupText: TextView = popupView.findViewById(R.id.popup_text)
+//        val closeButton: Button = popupView.findViewById(R.id.close_button)
+//
+//        popupText.text = "Hello from PopupWindow!"
+//        closeButton.setOnClickListener {
+//            popupWindow.dismiss()
+//        }
+
+
+            popupWindow.showAtLocation(
+                cl_parent,  // 需要一个 parent view，通常可以使用整个内容视图
+                Gravity.NO_GRAVITY,  // 指定无重力效应
+                0,  // x 坐标
+                0   // y 坐标
+            )
+
+        }
+
     }
 
 

@@ -50,11 +50,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    def lifecycle_version = "2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 
     // OkHttp 日志拦截器
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.2'
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.11.0' // 使用时请查找最新版本
@@ -64,7 +67,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // SmartRefreshLayout
-    implementation 'androidx.appcompat:appcompat:1.0.0'                 //必须 1.0.0 以上
+    implementation 'androidx.appcompat:appcompat:1.6.1'                 //必须 1.0.0 以上
     implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
     implementation  'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
     implementation  'io.github.scwang90:refresh-header-radar:2.0.6'       //雷达刷新头
@@ -73,4 +76,9 @@ dependencies {
     implementation  'io.github.scwang90:refresh-header-two-level:2.0.6'   //二级刷新头
     implementation  'io.github.scwang90:refresh-footer-ball:2.0.6'        //球脉冲加载
     implementation  'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
+
+    // room
+    implementation "androidx.room:room-runtime:2.5.1"
+    annotationProcessor "androidx.room:room-compiler:2.5.1"
+    apply plugin: 'kotlin-kapt' // 对于 Kotlin，使用 kapt 插件
 }
