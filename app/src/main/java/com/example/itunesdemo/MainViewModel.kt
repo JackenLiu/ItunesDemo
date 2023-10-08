@@ -18,7 +18,6 @@ class MainViewModel : ViewModel() {
     val error: LiveData<String> = repository.error
 
     val favorData = MutableLiveData<List<Data>>()
-    val getData = MutableLiveData<Data>()
 
     fun fetchData(content: String, offset: Int, limit: Int) {
         repository.searchItunes(content, offset, limit)
@@ -38,10 +37,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun deleteData(dao: DataDao, imgUrl: String) {
+    fun deleteData(dao: DataDao, imgUrl: String, title: String, detail: String, kind: String) {
         viewModelScope.launch {
-//            dao.deleteData(data)
-            dao.deleteDataByImgUrl(imgUrl)
+            dao.deleteData(imgUrl, title, detail, kind)
         }
     }
 

@@ -75,12 +75,21 @@ class RvAdapter(
             if (list[position].isLike) {
                 activity.viewModel.insertData(
                     activity.db.dataDao(),
-                    Data(null, list[position].artworkUrl100, titleStr, titleStr)
+                    Data(
+                        null,
+                        list[position].artworkUrl100,
+                        titleStr,
+                        typeName + " · " + list[position].artistName,
+                        list[position].kind
+                    )
                 )
             } else {
                 activity.viewModel.deleteData(
                     activity.db.dataDao(),
-                    list[position].artworkUrl100
+                    list[position].artworkUrl100,
+                    titleStr!!,
+                    typeName + " · " + list[position].artistName,
+                    list[position].kind!!
                 )
             }
         }

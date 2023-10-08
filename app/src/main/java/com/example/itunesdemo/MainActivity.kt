@@ -13,6 +13,7 @@ import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
@@ -20,10 +21,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.itunesdemo.adapter.CatalogueAdapter
 import com.example.itunesdemo.adapter.CatalogueAdapter.TextBean
 import com.example.itunesdemo.adapter.RvAdapter
+import com.example.itunesdemo.adapter.RvFavoriteAdapter
 import com.example.itunesdemo.db.AppDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter = RvAdapter()
     private val catalogueAdapter = CatalogueAdapter(adapter)
 
-     lateinit var db: AppDatabase
+    lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -178,54 +181,57 @@ class MainActivity : AppCompatActivity() {
             }.show()
     }
 
+    private var popupWindow: PopupWindow? = null
 
     private fun showPopupWindow() {
-        viewModel.getAllData(db.dataDao())
-        viewModel.favorData.observe(this) {
-            if (it == null) {
-                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show()
-                return@observe
-            }
-
-            // 从 XML 布局文件中获取 PopupWindow 的内容
+        if (popupWindow != null) return
+        else {
+            // 初始化 PopupWindow
             val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val popupView = inflater.inflate(R.layout.layout_popup, null)
-
-            // 初始化 PopupWindow
-            val popupWindow = PopupWindow(
+            popupWindow = PopupWindow(
                 popupView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
 
-            // 可以点击外部区域消失
-            popupWindow.isOutsideTouchable = true
-            popupWindow.isFocusable = true
+            viewModel.getAllData(db.dataDao())
+            viewModel.favorData.observe(this) {
+                // 从 XML 布局文件中获取 PopupWindow 的内容
+                popupWindow?.isFocusable = true
+                popupWindow?.isOutsideTouchable = true
 
-            // 如果 API >= 21, 设置 PopupWindow 的进入和退出动画
-            popupWindow.enterTransition = android.transition.TransitionInflater.from(this)
-                .inflateTransition(android.R.transition.fade)
-            popupWindow.exitTransition = android.transition.TransitionInflater.from(this)
-                .inflateTransition(android.R.transition.fade)
+                // 如果 API >= 21, 设置 PopupWindow 的进入和退出动画
+                popupWindow?.enterTransition = android.transition.TransitionInflater.from(this)
+                    .inflateTransition(android.R.transition.fade)
+                popupWindow?.exitTransition = android.transition.TransitionInflater.from(this)
+                    .inflateTransition(android.R.transition.fade)
 
-            // 获取并设置 PopupWindow 中的文本或按钮等 UI 组件的行为
-//        val popupText: TextView = popupView.findViewById(R.id.popup_text)
-//        val closeButton: Button = popupView.findViewById(R.id.close_button)
-//
-//        popupText.text = "Hello from PopupWindow!"
-//        closeButton.setOnClickListener {
-//            popupWindow.dismiss()
-//        }
-
-
-            popupWindow.showAtLocation(
-                cl_parent,  // 需要一个 parent view，通常可以使用整个内容视图
-                Gravity.NO_GRAVITY,  // 指定无重力效应
-                0,  // x 坐标
-                0   // y 坐标
-            )
-
+                popupView.findViewById<ImageView>(R.id.iv_close)
+                    .setOnClickListener {
+                        popupWindow?.dismiss()
+                        popupWindow = null
+                    }
+                popupView.findViewById<View>(R.id.v)
+                    .setOnClickListener {
+                        popupWindow?.dismiss()
+                        popupWindow = null
+                    }
+                if (it.isNotEmpty()) popupView.findViewById<ImageView>(R.id.iv_empty).visibility =
+                    View.GONE else popupView.findViewById<ImageView>(R.id.iv_empty).visibility =
+                    View.VISIBLE
+                val recyclerView = popupView.findViewById<RecyclerView>(R.id.rv_)
+                recyclerView.layoutManager = LinearLayoutManager(popupView.context)
+                recyclerView.visibility = View.VISIBLE
+                val adapter = RvFavoriteAdapter(it)
+                recyclerView.adapter = adapter
+                popupWindow?.showAtLocation(
+                    cl_parent,  // 需要一个 parent view，通常可以使用整个内容视图
+                    Gravity.NO_GRAVITY,  // 指定无重力效应
+                    0,  // x 坐标
+                    0   // y 坐标
+                )
+            }
         }
-
     }
 
 
