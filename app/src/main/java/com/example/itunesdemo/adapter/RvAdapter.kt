@@ -57,6 +57,7 @@ class RvAdapter(
             list[position].isLike = !list[position].isLike
             notifyDataSetChanged()
             if (list[position].isLike) {
+                val musicUrl = if (list[position].kind == "song") list[position].previewUrl else ""
                 activity.viewModel.insertData(
                     activity.db.dataDao(),
                     Data(
@@ -64,7 +65,7 @@ class RvAdapter(
                         list[position].artworkUrl100,
                         titleStr,
                         typeName + " · " + list[position].artistName,
-                        list[position].kind
+                        list[position].kind, musicUrl
                     )
                 )
             } else {

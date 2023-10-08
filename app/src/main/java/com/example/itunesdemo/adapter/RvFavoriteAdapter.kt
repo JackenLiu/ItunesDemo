@@ -1,5 +1,6 @@
 package com.example.itunesdemo.adapter
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.TypedValue
 import android.view.Gravity
@@ -8,14 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import com.bumptech.glide.Glide
+import com.example.itunesdemo.DetailActivity
+import com.example.itunesdemo.MainActivity
 import com.example.itunesdemo.R
 import com.example.itunesdemo.db.Data
 
 class RvFavoriteAdapter(private val list: List<Data> = mutableListOf()) :
     RecyclerView.Adapter<RvFavoriteAdapter.RvViewHolder>() {
+    lateinit var activity: MainActivity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
@@ -42,6 +47,24 @@ class RvFavoriteAdapter(private val list: List<Data> = mutableListOf()) :
         holder.tvTitle.text = list[position].title
         holder.tvDetail.text = list[position].detail
         holder.ivR.visibility = View.GONE
+
+        holder.itemView.setOnClickListener {
+            if (list[position].kind != "song") return@setOnClickListener
+            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                holder.iv,
+                "shared_element"
+            )
+            val intent = Intent(activity, DetailActivity::class.java)
+            intent.putExtra("artworkUrl_key", list[position].imgUrl)
+            intent.putExtra("tv_title_key", list[position].title)
+            intent.putExtra("tv_detail_key", list[position].detail)
+            intent.putExtra("music_url_key", list[position].musicUrl)
+            activity.startActivity(
+                intent,
+                activityOptions.toBundle()
+            )
+        }
     }
 
     override fun getItemViewType(position: Int) = position
