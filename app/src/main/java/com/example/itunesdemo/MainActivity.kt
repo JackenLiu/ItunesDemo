@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView.OnEditorActionListener
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -118,6 +117,7 @@ class MainActivity : AppCompatActivity() {
         // search result
         ed.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                isSearchData = true
                 fetchDataFromApi(ed.text.toString(), offset, limit)
                 hideKeyboard(v)
                 return@OnEditorActionListener true
@@ -162,11 +162,11 @@ class MainActivity : AppCompatActivity() {
         iv_favorites.setOnClickListener { showPopupWindow() }
     }
 
-    private var isFirstFetchData = true
+    private var isSearchData = true
     private fun fetchDataFromApi(content: String, offset: Int, limit: Int) {
-        if (isFirstFetchData) progressDialog.show()
+        if (isSearchData) progressDialog.show()
         viewModel.fetchData(content, offset, limit)
-        isFirstFetchData = false
+        isSearchData = false
     }
 
     private fun hideKeyboard(view: View) {
@@ -237,5 +237,10 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cl_parent.requestFocus()
     }
 }

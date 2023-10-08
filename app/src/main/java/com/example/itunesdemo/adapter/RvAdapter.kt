@@ -78,6 +78,7 @@ class RvAdapter(
         }
 
         holder.itemView.setOnClickListener {
+            if (list[position].kind != "song") return@setOnClickListener
             val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 activity,
                 holder.iv,
@@ -85,8 +86,9 @@ class RvAdapter(
             )
             val intent = Intent(activity, DetailActivity::class.java)
             intent.putExtra("artworkUrl_key", list[position].artworkUrl100)
-            if (list[position].kind == "song")
-                intent.putExtra("music_url_key", list[position].previewUrl)
+            intent.putExtra("tv_title_key", titleStr)
+            intent.putExtra("tv_detail_key", list[position].artistName)
+            intent.putExtra("music_url_key", list[position].previewUrl)
             activity.startActivity(
                 intent,
                 activityOptions.toBundle()

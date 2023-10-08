@@ -24,7 +24,9 @@ class DetailActivity : AppCompatActivity() {
         window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
         setContentView(R.layout.activity_detail)
 
-        iv_close.setOnClickListener { finish() }
+        iv_close.setOnClickListener { supportFinishAfterTransition() }
+        tv_title.text = intent.getStringExtra("tv_title_key")
+        tv_detail.text = intent.getStringExtra("tv_detail_key")
 
 
         val futureTarget = Glide.with(this)
@@ -57,6 +59,7 @@ class DetailActivity : AppCompatActivity() {
                 seekBar.max = duration
                 updateSeekBar()
                 btnPlayPause.isEnabled = true
+                btnPlayPause.text = "点击播放"
             }
         }
 
