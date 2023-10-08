@@ -1,5 +1,6 @@
 package com.example.itunesdemo
 
+import com.example.itunesdemo.db.DataDao
 import org.junit.Test
 
 import org.junit.Assert.*
