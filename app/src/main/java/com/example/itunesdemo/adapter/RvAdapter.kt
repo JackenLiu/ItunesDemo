@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import com.bumptech.glide.Glide
@@ -12,6 +13,9 @@ import com.example.itunesdemo.MainActivity
 import com.example.itunesdemo.R
 import com.example.itunesdemo.db.Data
 import com.example.itunesdemo.net.Result
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 class RvAdapter(
     private val list: MutableList<Result> = mutableListOf(),
@@ -80,6 +84,7 @@ class RvAdapter(
                 )
             }
         }
+
         if (list[position].isLike) holder.ivR.setImageResource(R.drawable.ic_heart_like)
         else holder.ivR.setImageResource(R.drawable.ic_heart_unlike)
     }
@@ -88,11 +93,18 @@ class RvAdapter(
     override fun getItemCount() = list.size
 
     fun updateData(newItems: List<Result>) {
-        list.clear()
-        originList.clear()
-        list.addAll(newItems)
-        for (item in newItems) originList.add(item)
-        notifyDataSetChanged()
+        thread {
+            list.clear()
+            originList.clear()
+            list.addAll(newItems)
+            for (item in newItems) {
+                val data =
+                    activity.viewModel.getDataByImgUrl(activity.db.dataDao(), item.artworkUrl100)
+                if (data != null) item.isLike = true
+                originList.add(item)
+            }
+            activity.runOnUiThread { notifyDataSetChanged() }
+        }
     }
 
     fun filterList(selectFilterNum: Int, filterList: List<CatalogueAdapter.TextBean>) {
