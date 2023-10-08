@@ -16,6 +16,7 @@
         <ImageView
             android:id="@+id/iv"
             android:layout_width="50dp"
+            android:transitionName="shared_element"
             android:layout_height="50dp"
             android:src="@drawable/loading"
             app:layout_constraintLeft_toLeftOf="parent"

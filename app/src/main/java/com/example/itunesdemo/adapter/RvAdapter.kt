@@ -1,13 +1,16 @@
 package com.example.itunesdemo.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import com.bumptech.glide.Glide
+import com.example.itunesdemo.DetailActivity
 import com.example.itunesdemo.MainActivity
 import com.example.itunesdemo.R
 import com.example.itunesdemo.db.Data
@@ -72,6 +75,22 @@ class RvAdapter(
                     typeName + " · " + list[position].artistName
                 )
             }
+        }
+
+        holder.itemView.setOnClickListener {
+            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                holder.iv,
+                "shared_element"
+            )
+            val intent = Intent(activity, DetailActivity::class.java)
+            intent.putExtra("artworkUrl_key", list[position].artworkUrl100)
+            if (list[position].kind == "song")
+                intent.putExtra("music_url_key", list[position].previewUrl)
+            activity.startActivity(
+                intent,
+                activityOptions.toBundle()
+            )
         }
 
         if (list[position].isLike) holder.ivR.setImageResource(R.drawable.ic_heart_like)
