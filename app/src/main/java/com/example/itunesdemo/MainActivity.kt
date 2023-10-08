@@ -25,14 +25,12 @@ import com.example.itunesdemo.adapter.CatalogueAdapter
 import com.example.itunesdemo.adapter.CatalogueAdapter.TextBean
 import com.example.itunesdemo.adapter.RvAdapter
 import com.example.itunesdemo.db.AppDatabase
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
+    lateinit var viewModel: MainViewModel
     private lateinit var progressDialog: ProgressDialog
 
     private var offset = 0
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter = RvAdapter()
     private val catalogueAdapter = CatalogueAdapter(adapter)
 
-    private lateinit var db: AppDatabase
+     lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         setViewListener()
 
         db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "favorite").build()
+        adapter.activity = this
 
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = adapter
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_catalogue.adapter = catalogueAdapter
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         progressDialog = ProgressDialog(this).apply {
             setMessage("加载中...")
             setCancelable(false)
@@ -142,17 +141,17 @@ class MainActivity : AppCompatActivity() {
             false
         })
         // refresh or load previous page
-        refreshLayout.setOnRefreshListener(OnRefreshListener { refreshlayout ->
+        refreshLayout.setOnRefreshListener { refreshlayout ->
             if (offset != 0) {
                 offset -= offsetValue
                 fetchDataFromApi(ed.text.toString(), offset, limit)
             } else refreshlayout.finishRefresh()
-        })
+        }
         // refresh or load next page
-        refreshLayout.setOnLoadMoreListener(OnLoadMoreListener { refreshlayout ->
+        refreshLayout.setOnLoadMoreListener { refreshlayout ->
             offset += offsetValue
             fetchDataFromApi(ed.text.toString(), offset, limit)
-        })
+        }
         // favorite
         iv_favorites.setOnClickListener { showPopupWindow() }
     }
@@ -164,12 +163,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun showKeyboard(view: View) {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager?.showSoftInput(view, 0)
+        inputMethodManager.showSoftInput(view, 0)
     }
 
     private fun showErrorDialog(errorMessage: String) {
@@ -203,12 +202,10 @@ class MainActivity : AppCompatActivity() {
             popupWindow.isFocusable = true
 
             // 如果 API >= 21, 设置 PopupWindow 的进入和退出动画
-            if (android.os.Build.VERSION.SDK_INT >= 21) {
-                popupWindow.enterTransition = android.transition.TransitionInflater.from(this)
-                    .inflateTransition(android.R.transition.fade)
-                popupWindow.exitTransition = android.transition.TransitionInflater.from(this)
-                    .inflateTransition(android.R.transition.fade)
-            }
+            popupWindow.enterTransition = android.transition.TransitionInflater.from(this)
+                .inflateTransition(android.R.transition.fade)
+            popupWindow.exitTransition = android.transition.TransitionInflater.from(this)
+                .inflateTransition(android.R.transition.fade)
 
             // 获取并设置 PopupWindow 中的文本或按钮等 UI 组件的行为
 //        val popupText: TextView = popupView.findViewById(R.id.popup_text)

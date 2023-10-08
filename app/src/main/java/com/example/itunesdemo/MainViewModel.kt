@@ -37,9 +37,10 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun deleteData(dao: DataDao, data: Data) {
+    fun deleteData(dao: DataDao, imgUrl: String) {
         viewModelScope.launch {
-            dao.deleteData(data)
+//            dao.deleteData(data)
+            dao.deleteDataByImgUrl(imgUrl)
         }
     }
 }

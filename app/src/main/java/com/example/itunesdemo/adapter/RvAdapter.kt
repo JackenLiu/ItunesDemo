@@ -1,6 +1,5 @@
 package com.example.itunesdemo.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import com.bumptech.glide.Glide
+import com.example.itunesdemo.MainActivity
 import com.example.itunesdemo.R
+import com.example.itunesdemo.db.Data
 import com.example.itunesdemo.net.Result
 
 class RvAdapter(
@@ -18,6 +19,7 @@ class RvAdapter(
 ) :
     RecyclerView.Adapter<RvAdapter.RvViewHolder>() {
 
+    lateinit var activity: MainActivity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
@@ -58,13 +60,25 @@ class RvAdapter(
         }
 
 
-        holder.tvTitle.text = if (list[position].trackName != null) list[position].trackName
+        val titleStr = if (list[position].trackName != null) list[position].trackName
         else list[position].collectionName
+        holder.tvTitle.text = titleStr
         holder.tvDetail.text = typeName + " · " + list[position].artistName
 
         holder.ivR.setOnClickListener {
             list[position].isLike = !list[position].isLike
             notifyDataSetChanged()
+            if (list[position].isLike) {
+                activity.viewModel.insertData(
+                    activity.db.dataDao(),
+                    Data(null, list[position].artworkUrl100, titleStr, titleStr)
+                )
+            } else {
+                activity.viewModel.deleteData(
+                    activity.db.dataDao(),
+                    list[position].artworkUrl100
+                )
+            }
         }
         if (list[position].isLike) holder.ivR.setImageResource(R.drawable.ic_heart_like)
         else holder.ivR.setImageResource(R.drawable.ic_heart_unlike)
@@ -85,8 +99,6 @@ class RvAdapter(
         val newList = mutableListOf<Result>()
         newList.addAll(originList)
         if (selectFilterNum != 0) {
-            var isCountryCheck = false
-            var isKindCheck = false
             for (result in originList) {
                 loop@ for (bean in filterList) {
                     // the filter is selected
