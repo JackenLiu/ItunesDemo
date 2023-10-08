@@ -37,14 +37,14 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun deleteData(dao: DataDao, imgUrl: String, title: String, detail: String, kind: String) {
+    fun deleteData(dao: DataDao, imgUrl: String, title: String, detail: String) {
         viewModelScope.launch {
-            dao.deleteData(imgUrl, title, detail, kind)
+            dao.deleteData(imgUrl, title, detail)
         }
     }
 
-    fun getData(dao: DataDao, imgUrl: String, title: String, detail: String, kind: String): Data? {
-        return dao.getData(imgUrl, title, detail, kind)
+    fun getData(dao: DataDao, imgUrl: String, title: String, detail: String): Data? {
+        return dao.getData(imgUrl, title, detail)
     }
 }
 

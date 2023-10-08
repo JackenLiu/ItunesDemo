@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ItunesDemo</string>
+    <string name="loading">Loading...</string>
+    <string name="input">input</string>
+    <string name="update_successfully">update successfully</string>
+    <string name="updating">Updating...</string>
+    <string name="pull_down_to_load_the_previous_page">Pull down to load the previous page</string>
+    <string name="release_load_the_previous_page_of_data">Release load the previous page of data</string>
+    <string name="pull_up_to_load_the_next_page_data">Pull up to load the next page data</string>
+    <string name="release_load_next_page_data">Release load next page data</string>
+    <string name="collection">collection</string>
+    <string name="movie">movie</string>
+    <string name="book">book</string>
+    <string name="song">song</string>
+    <string name="album">album</string>
+    <string name="coached_audio">coached audio</string>
+    <string name="interactive_booklet">interactive booklet</string>
+    <string name="music_video">music video</string>
+    <string name="pdf_podcast">pdf podcast</string>
+    <string name="podcast_episode">podcast episode</string>
+    <string name="software_package">software package</string>
+    <string name="tv_episode">tv episode</string>
+    <string name="artist">artist</string>
+    <string name="other">other</string>
+</resources>

@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">ItunesDemo</string>
+    <string name="loading">加载中...</string>
+    <string name="input">输入</string>
+    <string name="update_successfully">更新成功</string>
+    <string name="updating">更新中...</string>
+    <string name="pull_down_to_load_the_previous_page">下拉加载上一页数据</string>
+    <string name="release_load_the_previous_page_of_data">释放加载上一页数据</string>
+    <string name="pull_up_to_load_the_next_page_data">上拉加载下一页数据</string>
+    <string name="release_load_next_page_data">释放加载下一页数据</string>
+    <string name="collection">收藏</string>
+    <string name="movie">电影</string>
+    <string name="book">电子书</string>
+    <string name="song">歌曲</string>
+    <string name="album">专辑</string>
+    <string name="coached_audio">指导音频</string>
+    <string name="interactive_booklet">互动手册</string>
+    <string name="music_video">音乐视频</string>
+    <string name="pdf_podcast">pdf 播客</string>
+    <string name="podcast_episode">播客剧集</string>
+    <string name="software_package">软件包</string>
+    <string name="tv_episode">电视剧集</string>
+    <string name="artist">艺术家</string>
+    <string name="other">其他</string>
 </resources>

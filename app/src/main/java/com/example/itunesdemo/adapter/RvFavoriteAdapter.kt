@@ -39,25 +39,8 @@ class RvFavoriteAdapter(private val list: List<Data> = mutableListOf()) :
             .centerCrop()
             .into(holder.iv)
 
-        val typeName = when (list[position].kind) {
-            "feature-movie" -> "电影"
-            "book" -> "电子书"
-            "song" -> "歌曲"
-            "album" -> "专辑"
-            "coached-audio" -> "指导音频"
-            "interactive-booklet" -> "互动手册"
-            "music-video" -> "音乐视频"
-            "pdf podcast" -> "pdf 播客"
-            "podcast-episode" -> "播客剧集"
-            "software-package" -> "软件包"
-            "tv-episode" -> "电视剧集"
-            "artist" -> "艺术家"
-            else -> "其他"
-        }
-
-
         holder.tvTitle.text = list[position].title
-        holder.tvDetail.text = typeName + " · " + list[position].detail
+        holder.tvDetail.text = list[position].detail
         holder.ivR.visibility = View.GONE
     }
 

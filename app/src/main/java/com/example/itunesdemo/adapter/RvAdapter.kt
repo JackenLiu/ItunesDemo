@@ -44,23 +44,7 @@ class RvAdapter(
             .centerCrop()
             .into(holder.iv)
 
-        val typeName = when (list[position].kind) {
-            "feature-movie" -> "电影"
-            "book" -> "电子书"
-            "song" -> "歌曲"
-            "album" -> "专辑"
-            "coached-audio" -> "指导音频"
-            "interactive-booklet" -> "互动手册"
-            "music-video" -> "音乐视频"
-            "pdf podcast" -> "pdf 播客"
-            "podcast-episode" -> "播客剧集"
-            "software-package" -> "软件包"
-            "tv-episode" -> "电视剧集"
-            "artist" -> "艺术家"
-            else -> "其他"
-        }
-
-
+        val typeName = getKindStr(list[position].kind)
         val titleStr = if (list[position].trackName != null) list[position].trackName
         else list[position].collectionName
         holder.tvTitle.text = titleStr
@@ -85,8 +69,7 @@ class RvAdapter(
                     activity.db.dataDao(),
                     list[position].artworkUrl100,
                     titleStr!!,
-                    typeName + " · " + list[position].artistName,
-                    list[position].kind!!
+                    typeName + " · " + list[position].artistName
                 )
             }
         }
@@ -105,31 +88,32 @@ class RvAdapter(
             list.addAll(newItems)
             for (item in newItems) {
                 val titleStr = item.trackName ?: item.collectionName
-                val typeName = when (item.kind) {
-                    "feature-movie" -> "电影"
-                    "book" -> "电子书"
-                    "song" -> "歌曲"
-                    "album" -> "专辑"
-                    "coached-audio" -> "指导音频"
-                    "interactive-booklet" -> "互动手册"
-                    "music-video" -> "音乐视频"
-                    "pdf podcast" -> "pdf 播客"
-                    "podcast-episode" -> "播客剧集"
-                    "software-package" -> "软件包"
-                    "tv-episode" -> "电视剧集"
-                    "artist" -> "艺术家"
-                    else -> "其他"
-                }
                 val data =
                     activity.viewModel.getData(
                         activity.db.dataDao(), item.artworkUrl100,
-                        titleStr, typeName + " · " + item.artistName, item.kind!!
+                        titleStr, getKindStr(item.kind) + " · " + item.artistName
                     )
                 if (data != null) item.isLike = true
                 originList.add(item)
             }
             activity.runOnUiThread { notifyDataSetChanged() }
         }
+    }
+
+    private fun getKindStr(kind: String?) = when (kind) {
+        "feature-movie" -> activity.resources.getString(R.string.movie)
+        "book" -> activity.resources.getString(R.string.book)
+        "song" -> activity.resources.getString(R.string.song)
+        "album" -> activity.resources.getString(R.string.album)
+        "coached-audio" -> activity.resources.getString(R.string.coached_audio)
+        "interactive-booklet" -> activity.resources.getString(R.string.interactive_booklet)
+        "music-video" -> activity.resources.getString(R.string.music_video)
+        "pdf podcast" -> activity.resources.getString(R.string.pdf_podcast)
+        "podcast-episode" -> activity.resources.getString(R.string.podcast_episode)
+        "software-package" -> activity.resources.getString(R.string.software_package)
+        "tv-episode" -> activity.resources.getString(R.string.tv_episode)
+        "artist" -> activity.resources.getString(R.string.artist)
+        else -> activity.resources.getString(R.string.other)
     }
 
     fun filterList(selectFilterNum: Int, filterList: List<CatalogueAdapter.TextBean>) {

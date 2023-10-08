@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         progressDialog = ProgressDialog(this).apply {
-            setMessage("加载中...")
+            setMessage(resources.getString(R.string.loading))
             setCancelable(false)
         }
 
@@ -160,9 +160,11 @@ class MainActivity : AppCompatActivity() {
         iv_favorites.setOnClickListener { showPopupWindow() }
     }
 
+    private var isFirstFetchData = true
     private fun fetchDataFromApi(content: String, offset: Int, limit: Int) {
-        progressDialog.show()
+        if (isFirstFetchData) progressDialog.show()
         viewModel.fetchData(content, offset, limit)
+        isFirstFetchData = false
     }
 
     private fun hideKeyboard(view: View) {
