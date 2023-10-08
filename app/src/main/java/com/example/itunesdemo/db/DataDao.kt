@@ -20,6 +20,6 @@ interface DataDao {
     @Query("DELETE FROM data WHERE imgUrl = :imgUrl AND title = :title AND detail = :detail AND kind = :kind")
     suspend fun deleteData(imgUrl: String, title: String, detail: String, kind: String)
 
-    @Query("SELECT * FROM data WHERE  imgUrl = :imgUrl")
-    fun getDataByImgUrl(imgUrl: String): Data?
+    @Query("SELECT * FROM data WHERE imgUrl = :imgUrl AND title = :title AND detail = :detail AND kind = :kind")
+    fun getData(imgUrl: String, title: String, detail: String, kind: String): Data?
 }

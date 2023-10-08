@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
 
     private var offset = 0
-    private val offsetValue = 200
+    private val offsetValue = 20
     private var limit = offsetValue
 
     private val adapter = RvAdapter()
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.data.observe(this) {
             if (it.resultCount != 0) {
+                iv_empty.visibility = View.GONE
                 adapter.updateData(it.results)
 
                 val catalogueList = mutableListOf<TextBean>()

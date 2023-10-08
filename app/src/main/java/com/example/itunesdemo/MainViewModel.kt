@@ -43,8 +43,8 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getDataByImgUrl(dao: DataDao, imgUrl: String): Data? {
-        return dao.getDataByImgUrl(imgUrl)
+    fun getData(dao: DataDao, imgUrl: String, title: String, detail: String, kind: String): Data? {
+        return dao.getData(imgUrl, title, detail, kind)
     }
 }
 
