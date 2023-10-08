@@ -237,6 +237,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        cl_parent.requestFocus()
+        ed.postDelayed({
+            ed.clearFocus()
+            hideKeyboard(ed)
+        }, 10)
     }
 }

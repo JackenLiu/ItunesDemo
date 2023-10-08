@@ -59,17 +59,17 @@ class DetailActivity : AppCompatActivity() {
                 seekBar.max = duration
                 updateSeekBar()
                 btnPlayPause.isEnabled = true
-                btnPlayPause.text = "点击播放"
+                btnPlayPause.text = resources.getString(R.string.click_to_play)
             }
         }
 
         btnPlayPause.setOnClickListener {
             if (mediaPlayer?.isPlaying == true) {
                 mediaPlayer?.pause()
-                btnPlayPause.text = "Play"
+                btnPlayPause.text = resources.getString(R.string.play)
             } else {
                 mediaPlayer?.start()
-                btnPlayPause.text = "Pause"
+                btnPlayPause.text = resources.getString(R.string.pause)
                 updateSeekBar()
             }
         }

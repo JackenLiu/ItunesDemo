@@ -23,4 +23,8 @@
     <string name="tv_episode">tv episode</string>
     <string name="artist">artist</string>
     <string name="other">other</string>
+    <string name="preparing">preparing…</string>
+    <string name="click_to_play">click to play</string>
+    <string name="pause">pause</string>
+    <string name="play">play</string>
 </resources>

@@ -22,4 +22,8 @@
     <string name="tv_episode">电视剧集</string>
     <string name="artist">艺术家</string>
     <string name="other">其他</string>
+    <string name="preparing">准备中…</string>
+    <string name="click_to_play">点击播放</string>
+    <string name="play">播放</string>
+    <string name="pause">暂停</string>
 </resources>
