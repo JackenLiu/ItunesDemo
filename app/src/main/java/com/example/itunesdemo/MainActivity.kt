@@ -110,6 +110,10 @@ class MainActivity : AppCompatActivity() {
             showErrorDialog(it)
         }
 
+        ed.postDelayed({
+            ed.requestFocus()
+            showKeyboard(ed)
+        }, 500)
     }
 
     @SuppressLint("ClickableViewAccessibility")

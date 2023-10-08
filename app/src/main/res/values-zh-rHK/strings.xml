@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">ItunesDemo</string>
     <string name="loading">加載中...</string>
-    <string name="input">輸入</string>
+    <string name="input_to_search">輸入以搜索</string>
     <string name="update_successfully">更新成功</string>
     <string name="updating">更新中...</string>
     <string name="pull_down_to_load_the_previous_page">下拉加載上一頁數據</string>
