@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.itunesdemo.MainActivity
 import com.example.itunesdemo.R
+import com.example.itunesdemo.util.Util
 
 class CatalogueAdapter(
     private var rvAdapter: RvAdapter, private val list: MutableList<TextBean> = mutableListOf()
 ) :
     RecyclerView.Adapter<CatalogueAdapter.RvViewHolder>() {
-
+    lateinit var activity: MainActivity
     private var selectFilterNum = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
         val layout =
@@ -21,7 +23,7 @@ class CatalogueAdapter(
     }
 
     override fun onBindViewHolder(holder: RvViewHolder, position: Int) {
-        holder.tvTitle.text = list[position].name
+        holder.tvTitle.text = Util.getKindStr(activity, list[position].name)
 
         holder.tvTitle.setOnClickListener {
             list[position].isSelect = !list[position].isSelect

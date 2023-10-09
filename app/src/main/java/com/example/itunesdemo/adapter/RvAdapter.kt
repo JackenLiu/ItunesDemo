@@ -15,6 +15,7 @@ import com.example.itunesdemo.MainActivity
 import com.example.itunesdemo.R
 import com.example.itunesdemo.db.Data
 import com.example.itunesdemo.net.Result
+import com.example.itunesdemo.util.Util
 import kotlin.concurrent.thread
 
 class RvAdapter(
@@ -47,7 +48,7 @@ class RvAdapter(
             .centerCrop()
             .into(holder.iv)
 
-        val typeName = getKindStr(list[position].kind)
+        val typeName = Util.getKindStr(activity, list[position].kind)
         val titleStr = if (list[position].trackName != null) list[position].trackName
         else list[position].collectionName
         holder.tvTitle.text = titleStr
@@ -113,29 +114,13 @@ class RvAdapter(
                 val data =
                     activity.viewModel.getData(
                         activity.db.dataDao(), item.artworkUrl100,
-                        titleStr, getKindStr(item.kind) + " · " + item.artistName
+                        titleStr, Util.getKindStr(activity, item.kind) + " · " + item.artistName
                     )
                 if (data != null) item.isLike = true
                 originList.add(item)
             }
             activity.runOnUiThread { notifyDataSetChanged() }
         }
-    }
-
-    private fun getKindStr(kind: String?) = when (kind) {
-        "feature-movie" -> activity.resources.getString(R.string.movie)
-        "book" -> activity.resources.getString(R.string.book)
-        "song" -> activity.resources.getString(R.string.song)
-        "album" -> activity.resources.getString(R.string.album)
-        "coached-audio" -> activity.resources.getString(R.string.coached_audio)
-        "interactive-booklet" -> activity.resources.getString(R.string.interactive_booklet)
-        "music-video" -> activity.resources.getString(R.string.music_video)
-        "pdf podcast" -> activity.resources.getString(R.string.pdf_podcast)
-        "podcast-episode" -> activity.resources.getString(R.string.podcast_episode)
-        "software-package" -> activity.resources.getString(R.string.software_package)
-        "tv-episode" -> activity.resources.getString(R.string.tv_episode)
-        "artist" -> activity.resources.getString(R.string.artist)
-        else -> activity.resources.getString(R.string.other)
     }
 
     fun filterList(selectFilterNum: Int, filterList: List<CatalogueAdapter.TextBean>) {

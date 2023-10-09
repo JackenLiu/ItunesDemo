@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 val catalogueAdapter = CatalogueAdapter(adapter)
+                catalogueAdapter.activity = this
                 rv_catalogue.adapter = catalogueAdapter
                 catalogueAdapter.updateData(catalogueList)
             }
