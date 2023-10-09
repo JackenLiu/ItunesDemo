@@ -123,6 +123,7 @@ class MainActivity : AppCompatActivity() {
         ed.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 isSearchData = true
+                offset = 0
                 fetchDataFromApi(ed.text.toString(), offset, limit)
                 hideKeyboard(v)
                 return@OnEditorActionListener true
