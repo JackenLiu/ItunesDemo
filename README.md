@@ -34,7 +34,7 @@ After obtaining search results, the search box will display media and country ca
 
 **In the music player, you can click on a song to listen to a preview of the song.**：
 
-For search results, if the media type is a song, clicking on the item will trigger a song playback popup for previewing the song. The same applies to the Favorites section. However, if the media type is not a song, as shown in the image below
+For search results, if the media type is a song, clicking on the item will trigger a song playback popup for previewing the song. The same applies to the Favorites section. However, if the media type is not a song, the popup will not show. as shown in the image below
 
 ![avatar](https://github.com/JackenLiu/ItunesDemo/blob/main/file/Screenshot_2.jpg)
 
