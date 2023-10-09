@@ -28,4 +28,5 @@
     <string name="pause">暫停</string>
     <string name="play">播放</string>
     <string name="USA">美國</string>
+    <string name="please_enter_your_search">請輸入搜索内容</string>
 </resources>

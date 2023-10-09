@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -122,6 +123,13 @@ class MainActivity : AppCompatActivity() {
         // search result
         ed.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (ed.text.toString().isEmpty()) {
+                    Toast.makeText(
+                        this, resources.getString(R.string.please_enter_your_search),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@OnEditorActionListener true
+                }
                 isSearchData = true
                 offset = 0
                 fetchDataFromApi(ed.text.toString(), offset, limit)
