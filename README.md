@@ -1,4 +1,4 @@
-# Welcome to use ItunesDemo
+# Welcome to use ItunesDemo [(Download Apk)](https://github.com/JackenLiu/ItunesDemo/blob/main/file/app-debug.apk)
 
 An Android app that allows users to search for songs, albums, or artists using the iTunes API. The app provide the ability to filter and bookmark songs. It supports English, Traditional Chinese (Hong Kong), and Simplified Chinese (China) languages.
 
@@ -20,9 +20,9 @@ An Android app that allows users to search for songs, albums, or artists using t
 
 **Enter keywords to perform a search**：
 
-After obtaining search results, the search box will display media and country categories below it. Clicking on these categories performs intersection filtering. For example, if you click "美国" and then "歌曲," it filters out all songs from the USA. However, if you click "电影" and then "歌曲," no results will be displayed. Clicking "歌曲" alone filters out all songs, as shown in the image below.
+After obtaining search results, the search box will display media and country categories below it. Clicking on these categories performs intersection filtering. For example, if you click "USA" and then "song," it filters out all songs from the USA. However, if you click "movie" and then "song", no results will be displayed. Clicking "song" alone filters out all songs, as shown in the image below.
 
-![avatar](https://github.com/JackenLiu/ItunesDemo/blob/main/file/Screenshot_1.png)
+![avatar](https://github.com/JackenLiu/ItunesDemo/blob/main/file/Screenshot_1.jpg)
 ㅤ
 ㅤ
 ㅤ
@@ -36,7 +36,7 @@ After obtaining search results, the search box will display media and country ca
 
 For search results, if the media type is a song, clicking on the item will trigger a song playback popup for previewing the song. The same applies to the Favorites section. However, if the media type is not a song, as shown in the image below
 
-![avatar](https://github.com/JackenLiu/ItunesDemo/blob/main/file/Screenshot_2.png)
+![avatar](https://github.com/JackenLiu/ItunesDemo/blob/main/file/Screenshot_2.jpg)
 
 ㅤ
 ㅤ
@@ -50,7 +50,7 @@ For search results, if the media type is a song, clicking on the item will trigg
 
 In search results, you can navigate through multiple pages. Scrolling up displays the previous 20 results, while scrolling down shows the next 20 results. Each viewable set of results consists of 20 items, as illustrated in the following image.
 
-![avatar](https://github.com/JackenLiu/ItunesDemo/blob/main/file/Screenshot_3.png)
+![avatar](https://github.com/JackenLiu/ItunesDemo/blob/main/file/Screenshot_3.jpg)
 ㅤ
 ㅤ
 ㅤ
